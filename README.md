@@ -1,4 +1,4 @@
-# banus-cloud
+# banus-cloud WIP
 
 ## Project setup
 ```

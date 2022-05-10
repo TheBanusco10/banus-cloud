@@ -24,6 +24,7 @@ export default {
 
         const filesUploaded = ref([]);
 
+        // TODO uploadFile in vuex
         const uploadFile = async (evt) => {
             const files = [...evt.target.files];
 

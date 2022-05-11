@@ -10,17 +10,38 @@ export default createStore({
     }
   },
   mutations: {
-    getUserFiles: ({commit}) => {
-      commit.commit('getUserFiles');
+    getUserFiles: (state, files) => {
+      state.userFiles = files;
+    },
+
+    removeFile: (state, index) => {
+      state.userFiles.splice(index, 1);
     }
   },
   actions: {
-    getUserFiles: async ({state}) => {
+    getUserFiles: async ({commit}) => {
       const res = await fetch('http://localhost:3000/api/file');
       const data = await res.json();
 
-      state.userFiles = data.files;
-  }
+      commit('getUserFiles', data.files);
+
+    },
+
+    removeFile: async ({commit}, payload) => {
+      const res = await fetch(`http://localhost:3000/api/file/${payload.filename}`, {
+          method: 'DELETE'
+      });
+
+      const data = await res.json();
+
+      if (res.status !== 200) {
+          console.log(data.message);
+          return;
+      }
+
+      commit('removeFile', payload.index);
+
+    }
   },
   modules: {
   }

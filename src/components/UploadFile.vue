@@ -1,30 +1,24 @@
 <template>
-
-    <p>Upload your file</p>
-    <input @change="uploadFile" type="file" multiple>
-
-    <ul>
-        <li v-for="(file, index) in filesUploaded" :key="index">
-            <a :href="file.path" download>
-                {{ file.name }}
-            </a>
-        </li>
-    </ul>
+    <section id="uploadFile">
+        <p>Upload your file</p>
+        <input @change="uploadFile" type="file" multiple>
+    </section>
 
 </template>
 
 <script>
 
-import { ref } from 'vue';
+import { useStore } from 'vuex';
 
 export default {
     name: 'UploadFile',
 
     setup() {
 
-        const filesUploaded = ref([]);
+        const store = useStore();
 
-        // TODO uploadFile in vuex
+        const getUserFiles = () => store.dispatch('getUserFiles');
+
         const uploadFile = async (evt) => {
             const files = [...evt.target.files];
 
@@ -44,19 +38,23 @@ export default {
 
             const data = await res.json();
 
-            console.log(data);
+            evt.target.value = [];
 
-            // filesUploaded.value = files;
-
-            // console.log(files);
+            getUserFiles();
         }
 
         return {
-            uploadFile,
-
-            filesUploaded
+            uploadFile
         }
 
     },
 }
 </script>
+
+<style lang="scss" scoped>
+
+    #uploadFile {
+        flex-basis: 30%;
+    }
+
+</style>

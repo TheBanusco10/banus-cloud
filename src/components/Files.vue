@@ -8,7 +8,7 @@
                 <img class="icon" v-if="file.type !== 'image'" src="../assets/icons/text-icon.svg" :alt="file.name">
                 <img class="image-preview" v-else :src="`http://localhost:3000/${file.name}`" :alt="file.name">
                 <p class="name">
-                    {{ file.name }}
+                    {{ file.name.substring(UUID_LENGTH) }}
                 </p>
                 <p class="size">
                     {{ bytesToSize(file.sizeInBytes) }}
@@ -28,7 +28,7 @@
 
 <script>
 
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useStore } from 'vuex';
 
 export default {
@@ -58,6 +58,7 @@ export default {
 
         return {
             userFiles: computed(() => store.getters.getUserFiles),
+            UUID_LENGTH: 37,
 
             getUserFiles,
             removeFile: (filename, index) => store.dispatch('removeFile', {filename, index}),
@@ -74,7 +75,7 @@ export default {
 
     #userFiles {
 
-        flex-basis: 70%;
+        flex-basis: 60%;
 
         #files {
     

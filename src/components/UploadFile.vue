@@ -8,7 +8,8 @@
 
 <script>
 
-import { useStore } from 'vuex';
+import { useStore } from 'vuex'
+import { computed } from 'vue'
 
 export default {
     name: 'UploadFile',
@@ -16,6 +17,8 @@ export default {
     setup() {
 
         const store = useStore();
+
+        const user = computed(() => store.getters.getUser);
 
         const getUserFiles = () => store.dispatch('getUserFiles');
 
@@ -30,6 +33,7 @@ export default {
                 formData.append('files', el);
             });
 
+            formData.append('user_id', user.value._id);
 
             const res = await fetch('http://localhost:3000/api/file', {
                 method: 'POST',
@@ -39,6 +43,8 @@ export default {
             const data = await res.json();
 
             evt.target.value = [];
+
+            console.log(data);
 
             getUserFiles();
         }
@@ -54,7 +60,7 @@ export default {
 <style lang="scss" scoped>
 
     #uploadFile {
-        flex-basis: 30%;
+        flex-basis: 40%;
     }
 
 </style>

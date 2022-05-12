@@ -1,19 +1,45 @@
 <template>
   <main>
-    <UploadFile />
-    <Files />
+    <section v-if="!user.name">
+      <p>
+        {{ user.name }}
+      </p>
+      <Login />
+    </section>
+    <section v-else>
+      <Files />
+      <UploadFile />
+    </section>
   </main>
 </template>
 
 <script>
 import UploadFile from './components/UploadFile.vue'
 import Files from './components/Files.vue'
+import Login from './components/Login.vue'
+import { useStore } from 'vuex'
+import { computed } from 'vue'
 
 export default {
   name: 'App',
   components: {
     UploadFile,
-    Files
+    Files,
+    Login
+  },
+
+  setup() {
+    const store = useStore();
+
+    // onMounted(() => {
+    //   setInterval(() => {
+    //     console.log(user);
+    //   }, 1000);
+    // });
+
+    return {
+      user: computed(() => store.getters.getUser)
+    }
   }
 }
 </script>

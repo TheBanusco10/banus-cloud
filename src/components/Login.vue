@@ -1,20 +1,20 @@
 <template>
-    <div v-if="isLogging" id="logging">
-        <p>Login</p>
-        <input type="text" placeholder="example@example.com" v-model="userInformation.email">
-        <input type="password" placeholder="******" v-model="userInformation.password">
-        <button @click="logging">Log in</button>
+    <div v-if="isLogging" class="login-modal">
+        <p class="title">Login</p>
+        <input type="text" placeholder="Email" v-model="userInformation.email">
+        <input type="password" placeholder="Password" v-model="userInformation.password">
+        <button @click="login">Log in</button>
 
-        <p @click="isLogging = false">Change to Register</p>
+        <p @click="isLogging = false" class="change-modal">Don't have an account yet? Register here</p>
     </div>
-    <div v-else id="register">
-        <p>Register</p>
+    <div v-else class="login-modal">
+        <p class="title">Register</p>
         <input type="text" placeholder="Name" v-model="userInformation.name">
-        <input type="text" placeholder="example@example.com" v-model="userInformation.email">
-        <input type="password" placeholder="******" v-model="userInformation.password">
-        <button @click="registerUser">Register</button>
+        <input type="text" placeholder="Email" v-model="userInformation.email">
+        <input type="password" placeholder="Password" v-model="userInformation.password">
+        <button @click="registerUser">Create account</button>
 
-        <p @click="isLogging = true">Change to Login</p>
+        <p @click="isLogging = true" class="change-modal">I already have an account</p>
     </div>
 </template>
 
@@ -37,7 +37,7 @@ export default {
         });
 
         const registerUser = async () => {
-            const res = await fetch(`${process.env.VUE_APP_BASE_API}/user`, {
+            const res = await fetch(`${process.env.VUE_APP_BASE_API}/register`, {
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(userInformation.value)
@@ -49,7 +49,7 @@ export default {
             console.log(data);
         }
 
-        const logging = async () => {
+        const login = async () => {
             const res = await fetch(`${process.env.VUE_APP_BASE_API}/login`, {
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
@@ -59,7 +59,7 @@ export default {
             const data = await res.json();
 
             if (res.status === 200)
-                store.commit('setUser', data);
+                store.commit('setUser', data.user);
 
             console.log(data);
         }
@@ -69,9 +69,74 @@ export default {
             userInformation,
 
             registerUser,
-            logging
+            login
         }
 
     },
 }
 </script>
+
+<style lang="scss" scoped>
+
+  @import '../scss/variables';
+
+  .login-modal {
+    display: flex;
+    flex-wrap: wrap;
+    flex-flow: column;
+
+    .title {
+      font-size: 26px;
+      text-transform: uppercase;
+    }
+
+    input {
+      margin-bottom: 1rem;
+      padding: 10px;
+
+      border: none;
+      border-bottom: 2px solid $border-color;
+
+      transition: all .3s;
+
+      &:focus {
+        outline: none !important;
+        border-color: $border-color-hover;
+      }
+    }
+
+    button {
+      padding: 10px;
+
+      border: 2px solid $border-color;
+      background-color: transparent;
+
+      text-transform: uppercase;
+
+      cursor: pointer;
+
+      transition: all .3s;
+
+      &:hover {
+        color: white;
+        background-color: $border-color;
+      }
+    }
+
+    .change-modal {
+      font-size: 13px;
+      color: gray;
+
+      cursor: pointer;
+
+      transition: all .3s;
+
+      border-bottom: 2px solid transparent;
+
+      &:hover {
+        border-bottom: 2px solid $border-color;
+      }
+    }
+  }
+
+</style>

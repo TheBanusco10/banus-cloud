@@ -1,12 +1,9 @@
 <template>
   <main>
-    <section v-if="!user.name">
-      <p>
-        {{ user.name }}
-      </p>
+    <section v-if="!user.name" id="login-container">
       <Login />
     </section>
-    <section v-else>
+    <section v-else id="files-section">
       <Files />
       <UploadFile />
     </section>
@@ -31,12 +28,6 @@ export default {
   setup() {
     const store = useStore();
 
-    // onMounted(() => {
-    //   setInterval(() => {
-    //     console.log(user);
-    //   }, 1000);
-    // });
-
     return {
       user: computed(() => store.getters.getUser)
     }
@@ -51,14 +42,28 @@ export default {
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
-    margin-top: 60px;
   }
 
   main {
+
+    height: 93vh;
+
     display: flex;
     flex-wrap: wrap;
 
     justify-content: center;
+    align-items: center;
+
+    #login-container {
+      width: 60%;
+    }
+    
+    #files-section {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
   }
 
 </style>

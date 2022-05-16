@@ -18,6 +18,12 @@ export default createStore({
       state.user = user;
     },
 
+    logout: (state) => {
+      state.user = '';
+
+      localStorage.removeItem('user');
+    },
+
     getUserFiles: (state, files) => {
       state.userFiles = files;
     },

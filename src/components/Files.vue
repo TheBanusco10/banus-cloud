@@ -1,7 +1,6 @@
 <template>
     <section id="userFiles">
         <h2>Your files</h2>
-        <button @click="getUserFiles">Get files</button>
 
         <section v-if="Object.keys(userFiles).length !== 0" id="files">
             <div class="file" v-for="(file, index) in userFiles" :key="index">
@@ -71,13 +70,13 @@ export default {
 
 <style lang="scss" scoped>
 
-    //$border-color: cadetblue;
-
     @import '../scss/variables';
 
     #userFiles {
 
-        flex-basis: 60%;
+        flex-basis: 59%;
+
+        border-right: 2px solid $border-color;
 
         #files {
     
